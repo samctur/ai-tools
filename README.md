@@ -1,4 +1,4 @@
-# Nutraplanner Ai Support Tools
+# Ai Support Tools
 
 ## Architecture Overview
 Client
@@ -43,10 +43,10 @@ pip install diffusers transformers accelerate safetensors
 ## Docker Setup
 ```
 # Build the image
-docker build -t recipe-image-api .
+docker build -t image-api .
 
 # Run the container
-docker run -d -p 8000:8000 --name recipe-api recipe-image-api
+docker run -d -p 8000:8000 --name api image-api
 
 # Run container for local development
 docker-compose up --build
@@ -68,7 +68,7 @@ uvicorn app.main:app --reload
 
 ## Curl Test
 ```
-curl -X POST "http://localhost:8000/generate?model_type=recipe" \
+curl -X POST "http://localhost:8000/generate?model_type=profile" \
   -H "Content-Type: application/json" \
   -d '{
         "title": "Vegan Pancakes",

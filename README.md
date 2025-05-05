@@ -1,15 +1,9 @@
 # Ai Support Tools
 
 ## Architecture Overview
-Client
-↓ POST /generate
-FastAPI App (Publisher)
-→ sends prompt to RabbitMQ queue
-↓
-RabbitMQ
-↓
-Worker (Consumer)
-→ calls Stability API and handles image generation
+Fast API client receives POST requests. Piblishes  request to RabbitMQ. Wroker consumes prompt and handles image generation.
+
+Dockerized for ease of use with 2 workers by default.
 
 
 ## Dependency Setup

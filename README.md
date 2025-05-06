@@ -1,25 +1,10 @@
-# Nutraplanner Ai Support Tools
+# Ai Support Tools
 
 ## Architecture Overview
-Client
-<br/>
-↓
-<br/>
-POST /generate
-<br/>
-FastAPI App (Publisher)
-<br/>
-→ sends prompt to RabbitMQ queue
-<br/>
-↓
-<br/>
-RabbitMQ
-<br/>
-↓
-<br/>
-Worker (Consumer)
-<br/>
-→ calls Stability API and handles image generation
+
+Fast API client receives POST requests. Piblishes  request to RabbitMQ. Wroker consumes prompt and handles image generation. Logging server logs all messages and results are stored in postgres with embedings.
+
+Dockerized for ease of use with 2 workers by default.
 
 ## Dependency Setup
 Skip to step 3 if you are using Docker.
@@ -52,10 +37,10 @@ pip install diffusers transformers accelerate safetensors
 ## Docker Setup
 ```
 # Build the image
-docker build -t recipe-image-api .
+docker build -t image-api .
 
 # Run the container
-docker run -d -p 8000:8000 --name recipe-api recipe-image-api
+docker run -d -p 8000:8000 --name api image-api
 
 # Run container for local development
 docker-compose up --build
@@ -77,7 +62,7 @@ uvicorn app.main:app --reload
 
 ## Curl Test
 ```
-curl -X POST "http://localhost:8000/generate?model_type=recipe" \
+curl -X POST "http://localhost:8000/generate?model_type=profile" \
   -H "Content-Type: application/json" \
   -d '{
         "title": "Vegan Pancakes",

@@ -2,15 +2,24 @@
 
 ## Architecture Overview
 Client
-↓ POST /generate
+<br/>
+↓
+<br/>
+POST /generate
+<br/>
 FastAPI App (Publisher)
+<br/>
 → sends prompt to RabbitMQ queue
+<br/>
 ↓
+<br/>
 RabbitMQ
+<br/>
 ↓
+<br/>
 Worker (Consumer)
+<br/>
 → calls Stability API and handles image generation
-
 
 ## Dependency Setup
 Skip to step 3 if you are using Docker.

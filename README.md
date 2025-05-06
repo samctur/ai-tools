@@ -1,10 +1,10 @@
 # Ai Support Tools
 
 ## Architecture Overview
-Fast API client receives POST requests. Piblishes  request to RabbitMQ. Wroker consumes prompt and handles image generation.
+
+Fast API client receives POST requests. Piblishes  request to RabbitMQ. Wroker consumes prompt and handles image generation. Logging server logs all messages and results are stored in postgres with embedings.
 
 Dockerized for ease of use with 2 workers by default.
-
 
 ## Dependency Setup
 Skip to step 3 if you are using Docker.

@@ -9,7 +9,7 @@ services:
       - .env
     volumes:
       - ./app:/app/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.fastApi:app --host 0.0.0.0 --port 8000
     depends_on:
       - rabbitmq
 
@@ -39,15 +39,28 @@ services:
       timeout: 3s
       retries: 5
 
-  worker:
+  mcp-server:
     build:
       context: .
     env_file:
       - .env
     volumes:
       - ./app:/app/app
-      - ./worker_output:/app/output
-    command: python app/worker.py
+    command: python app/mcpServer.py
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+
+  image-gen-worker:
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app/app
+      - ./worker_output/image_gen_worker:/app/output
+    command: python app/workers/imageGenWorker.py
     depends_on:
       - rabbitmq
     deploy:
@@ -67,7 +80,7 @@ services:
     volumes:
       - ./app:/app/app
       - ./worker_output:/app/output
-    command: python app/logger.py
+    command: python app/workers/logger.py
     depends_on:
       - rabbitmq
     deploy:

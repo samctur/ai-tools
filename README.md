@@ -1,13 +1,13 @@
 # Ai Support Tools
 
-## Architecture Overview
-
-Fast API client receives POST requests. Piblishes  request to RabbitMQ. Wroker consumes prompt and handles image generation. Logging server logs all messages and results are stored in postgres with embedings.
+Fast API client receives POST requests. Piblishes  request to RabbitMQ.  Wroker consumes prompt and handles image generation. Logging server logs all messages and results are stored in postgres with embedings. Workers use MCP Server to communicate internally and externally.
 
 Dockerized for ease of use with 2 workers by default.
 
 ## Dependency Setup
+
 Skip to step 3 if you are using Docker.
+
 ### Remote Setup with api.stability.ai
 1. Create and activate virtual environment
 ```
@@ -34,39 +34,31 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install diffusers transformers accelerate safetensors
 ```
 
-## Docker Setup
+## Start Servers
 ```
-# Build the image
-docker build -t image-api .
-
-# Run the container
-docker run -d -p 8000:8000 --name api image-api
-
-# Run container for local development
 docker-compose up --build
+```
 
-# Clean up
+## Cleanup Server
+```
 docker-compose down --volumes --remove-orphans
 ```
 
-## Start Server
-### With Docker
+## FastApi Curl Test
 ```
-docker-compose up --build
-```
-
-### without Docker
-```
-uvicorn app.main:app --reload
-```
-
-## Curl Test
-```
-curl -X POST "http://localhost:8000/generate?model_type=profile" \
+curl -X POST "http://localhost:8000/generate?model_type=recipe" \
   -H "Content-Type: application/json" \
   -d '{
         "title": "Vegan Pancakes",
         "ingredients": ["flour", "almond milk", "banana"],
         "steps": ["Mix ingredients", "Cook on skillet", "Serve hot"]
       }'
+```
+
+## MCPServer Curl Test
+```
+curl -X POST http://localhost:8080/mcp/ \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json, text/event-stream" \
+    -d '{"action":"list_tools"}'
 ```

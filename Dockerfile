@@ -1,5 +1,5 @@
 # Use official Python image
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 ENV PYTHONPATH="/app"
 
@@ -8,13 +8,15 @@ WORKDIR /app
 
 # Copy requirements and install
 COPY requirements.txt .
+
+# Install system dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY app/ app/
 
-# Expose port
+# Expose ports
 EXPOSE 8000
 
 # Start the app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# No CMD — just use docker-compose to define entrypoint per service

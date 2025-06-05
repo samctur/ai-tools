@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logger
+  template:
+    metadata:
+      labels:
+        app: logger
+    spec:
+      containers:
+        - name: logger
+          image: your-image-repo/logger:latest
+          command: ["python", "app/workers/logger.py"]
+          envFrom:
+            - configMapRef:
+                name: app-config

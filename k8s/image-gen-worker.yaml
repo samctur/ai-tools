@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-gen-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: image-gen-worker
+  template:
+    metadata:
+      labels:
+        app: image-gen-worker
+    spec:
+      containers:
+        - name: image-gen-worker
+          image: your-image-repo/image-gen-worker:latest
+          command: ["python", "app/workers/imageGenWorker.py"]
+          env:
+            - name: POSTGRES_URL
+              value: postgresql://postgres:postgres@db/ai-tools
